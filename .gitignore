@@ -4,3 +4,5 @@ dist
 yarn-error.log
 yarn.lock
 __theme__
+package-lock.json
+database.db

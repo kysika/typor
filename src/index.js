@@ -1,3 +1,3 @@
 export function main() {
-    console.log("rattus init");
+	console.log("rattus init");
 }

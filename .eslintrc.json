@@ -1,18 +1,18 @@
 {
+	"parser": "@babel/eslint-parser",
 	"env": {
 		"browser": true,
 		"es2021": true,
 		"node": true
 	},
-	"extends": ["eslint:recommended", "plugin:react/recommended"],
+	"extends": ["alloy", "alloy/react"],
 	"parserOptions": {
 		"ecmaFeatures": {
 			"jsx": true
 		},
-		"ecmaVersion": 12,
+		"ecmaVersion": 2021,
 		"sourceType": "module"
 	},
-	"parser": "@babel/eslint-parser",
 	"plugins": ["react"],
 	"rules": {},
 	"settings": {
