@@ -57,3 +57,8 @@ export function toggleTheme() {}
 export function useServerSideInjectedContext() {
 	return window[serverSideInjectedContextKey] || new Map();
 }
+
+export function useURL() {
+	const url = writable(getContext("url") || "/");
+	return url;
+}

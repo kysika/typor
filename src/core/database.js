@@ -1,4 +1,5 @@
 import knex from "knex";
+import { DatabaseTable, Foreigns, References } from "./constants.js";
 
 export const database = knex({
 	client: "sqlite3",
@@ -12,9 +13,8 @@ export const database = knex({
 /**
  * @type { Record<string, import("../../global").tableBuilder> }
  */
-
 export const tablemap = {
-	user: (table) => {
+	[DatabaseTable.User]: (table) => {
 		table.increments("id").primary();
 		table.string("username");
 		table.integer("created_at");
@@ -26,34 +26,41 @@ export const tablemap = {
 		table.string("address");
 		table.string("concat");
 	},
-	timeline: (table) => {
+	[DatabaseTable.Timeline]: (table) => {
 		table.increments("id").primary();
 		table.string("line").unique();
-		table.foreign("id").references("article.timeline_id");
 	},
-	tag: (table) => {
+	[DatabaseTable.Tag]: (table) => {
 		table.increments("id").primary();
 		table.string("name").unique();
 		table.string("color");
 		table.string("back_color");
-		table.foreign("id").references("article.tag_id");
 	},
-	category: (table) => {
+	[DatabaseTable.Category]: (table) => {
 		table.increments("id").primary();
 		table.string("type").unique();
-		table.foreign("id").references("article.category_id");
 	},
-	article: (table) => {
+	[DatabaseTable.Article]: (table) => {
 		table.increments("id").primary();
 		table.string("title");
 		table.text("content");
+		table.text("resource");
 		table.text("excerpt");
-		table.string("author");
-		table.string("created_at");
-		table.string("updated_at");
-		table.foreign("id").references("tag.article_id");
-		table.foreign("id").references("timeline.article_id");
-		table.foreign("id").references("category.article_id");
+		table.integer("created_at");
+		table.integer("updated_at");
+		table.integer(Foreigns.timeline);
+		table.integer(Foreigns.category);
+		table.integer(Foreigns.user);
+		table.foreign(Foreigns.timeline).references(References.timeline);
+		table.foreign(Foreigns.category).references(References.category);
+		table.foreign(Foreigns.user).references(References.user);
+	},
+	[DatabaseTable.ArticleTag]: (table) => {
+		table.increments("id").primary();
+		table.integer(Foreigns.article).notNullable();
+		table.integer(Foreigns.tag).notNullable();
+		table.foreign(Foreigns.article).references(References.article);
+		table.foreign(Foreigns.tag).references(References.tag);
 	},
 };
 
