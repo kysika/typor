@@ -39,7 +39,7 @@ async function search(searchOption = {}) {
 }
 
 async function findOne(id) {
-	const pt = database.from(DatabaseTable.ArticleTag).where(`${DatabaseTable.ArticleTag}.${Foreigns.article}`, id);
+	const pt = database.from(DatabaseTable.ArticleTag).where(`${DatabaseTable.ArticleTag}.${Foreigns.article}`, id).leftJoin;
 	const pa = database.select("*").from(DatabaseTable.Article).where({ id });
 
 	const [article, tags] = await Promise.all([pa, pt]);
