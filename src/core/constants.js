@@ -23,3 +23,9 @@ export const Foreigns = {
 	timeline: `timeline_id`,
 	category: "category_id",
 };
+
+export const ArticleStatus = {
+	hide: 0,
+	display: 1,
+	invalide: 2,
+};

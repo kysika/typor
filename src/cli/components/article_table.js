@@ -1,5 +1,5 @@
-import { renderer } from "../shared/renderer.js";
 import { Table } from "../shared/table.js";
+import dayjs from "dayjs";
 
 const colums = [
 	{
@@ -9,65 +9,41 @@ const colums = [
 	{
 		name: "title",
 		width: 30,
+		/**
+		 *
+		 * @param {string} title
+		 * @returns
+		 */
+		render(title) {
+			return title.length > 20 ? title.slice(0, 20) + "..." : title;
+		},
 	},
 	{
 		name: "updated_at",
 		width: 20,
+		render(time) {
+			return dayjs(time).format("YYYY/MM/DD HH:mm");
+		},
 	},
 	{
 		name: "created_at",
 		width: 20,
+		render(time) {
+			return dayjs(time).format("YYYY/MM/DD HH:mm");
+		},
 	},
 	{
 		name: "excerpt",
-		width: 120,
+		width: 40,
+		/**
+		 *
+		 * @param {string} excerpt
+		 * @returns
+		 */
+		render(excerpt) {
+			return excerpt.length > 30 ? excerpt.slice(0, 30) + "..." : excerpt;
+		},
 	},
 ];
 
-const table = new Table(colums, { border: "=", column: "|" });
-const headline = table.head();
-const borderline = table.border();
-const dashline = table.fillline("-");
-
-function head() {
-	renderer.text(headline);
-}
-
-function border() {
-	renderer.primary(borderline);
-}
-
-function dash() {
-	renderer.text(dashline);
-}
-
-function empty() {
-	const _e = table.empty();
-	const text = table.oneline("now is empty, use tk creaet <file> to create a article page!");
-	renderer.text(_e);
-	renderer.text(_e);
-	renderer.text(text);
-	renderer.text(_e);
-	renderer.text(_e);
-	dash();
-}
-
-/**
- *
- * @param {Array} data
- */
-export function render(data) {
-	border();
-	dash();
-	head();
-	dash();
-	if (data.length === 0) {
-		empty();
-	} else {
-		data.forEach((article) => {
-			renderer.text(table.row(article));
-			dash();
-		});
-	}
-	border();
-}
+export const articleTable = new Table(colums, { border: "=", column: "|" });

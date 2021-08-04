@@ -1,28 +1,29 @@
 #! /usr/bin/env node
-
-// TODO theme dev
-// init
-// server
-
 import { Command } from "commander";
 import fs from "fs-extra";
 import { version } from "./shared/version.js";
+import path from "path";
 
-const cli = new Command();
+const program = new Command();
 
-cli.version(version);
+program.version(version);
 
-const url = new URL("./command", import.meta.url);
+const commandFolder = "commands";
+
+const url = new URL(commandFolder, import.meta.url);
 const files = await fs.readdir(url.pathname);
 
-const configs = await Promise.all(files.map((file) => import(`./command/${file}`).then((module) => module.default)));
+const commands = await Promise.all(files.map((file) => import(path.resolve(url.pathname, file)).then((module) => module.default)));
 
-for (const { name, option, action, desc } of configs) {
-	const self = cli.command(name);
-	if (option) {
-		self.option(option);
-	}
+commands.forEach(register);
+
+program.parse(process.argv);
+
+function register({ name, option, action, desc }) {
+	const self = program.command(name);
+	const options = Array.isArray(option) ? option : [];
+	options.forEach((item) => Array.isArray(item) && self.option(...item));
 	self.description(desc || "").action(action);
 }
 
-cli.parse(process.argv);
+// function ensureWorkplace() {}

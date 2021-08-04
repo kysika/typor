@@ -4,10 +4,10 @@ export declare interface Article {
 	title: string;
 	content: string;
 	resource: string;
-	author: string;
 	updated_at: number;
 	created_at: number;
 	excerpt: string;
+	status: ArticleStatus;
 }
 
 export declare interface Theme {
@@ -16,3 +16,15 @@ export declare interface Theme {
 }
 
 export declare type tableBuilder = (table: Knex.CreateTableBuilder) => void;
+
+export declare interface SearchOption {
+	limit: number;
+	page: number;
+	where: Record<string, unknown>;
+}
+
+export declare enum ArticleStatus {
+	hide,
+	display,
+	invalide,
+}

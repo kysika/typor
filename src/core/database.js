@@ -42,12 +42,13 @@ export const tablemap = {
 	},
 	[DatabaseTable.Article]: (table) => {
 		table.increments("id").primary();
-		table.string("title");
+		table.string("title").unique().notNullable();
 		table.text("content");
 		table.text("resource");
 		table.text("excerpt");
 		table.integer("created_at");
 		table.integer("updated_at");
+		table.integer("status").notNullable();
 		table.integer(Foreigns.timeline);
 		table.integer(Foreigns.category);
 		table.integer(Foreigns.user);

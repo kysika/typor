@@ -1,30 +1,29 @@
+import { formatter } from "./format.js";
+
 /**
- * @typedef { ({name: string; width: number})} Column
- * @typedef { ({ column: string; border: string}) } SplitOptions
+ * @typedef { ({name: string; width: number, render?:(value: any) => string})} Column
+ * @typedef { ({ column: string;row: string; border: string}) } SplitOptions
  */
-
-import { line, columnSideSpace } from "./format.js";
-
 export class Table {
 	/**
-	 * @property { Column []}
+	 * @type { Column []}
 	 * @private
 	 */
 	columns;
 
 	/**
-	 * @property { SplitOptions }
-	 * @private
+	 * @type { SplitOptions }
+	 * @readonly
 	 */
 	options;
 
 	/**
-	 * @private
+	 * @readonly
 	 */
 	tableWidth = 0;
 
 	/**
-	 * @private
+	 * @readonly
 	 */
 	contentWidth = 0;
 
@@ -35,39 +34,33 @@ export class Table {
 	 */
 	constructor(columns, options) {
 		this.columns = columns;
-		this.options = { border: "=", column: "|", ...options };
+		this.options = { border: "=", column: "|", row: "-", ...options };
 		this.tableWidth = this.columns.reduce((total, value) => total + value.width, 0) + (this.columns.length + 1) * this.options.column.length;
 		this.contentWidth = this.tableWidth - this.options.column.length * 2;
 	}
 
 	row(data) {
-		return this.columns.reduce((t, { width, name }) => {
-			const [left, right] = columnSideSpace(width, data[name]);
-			return t + `${left}${data[name]}${right}${this.options.column}`;
+		return this.columns.reduce((t, { width, name, render }) => {
+			const value = render ? render(data[name]) : data[name];
+			return t + `${formatter.center(width, value)}${this.options.column}`;
 		}, this.options.column);
 	}
 
 	border() {
-		return line(this.tableWidth, this.options.border);
+		return `${this.options.column}${formatter.filledWith(this.contentWidth, this.options.row)}${this.options.column}`;
+	}
+
+	outline() {
+		return formatter.filledWith(this.tableWidth, this.options.border);
 	}
 
 	head() {
 		return this.columns.reduce((t, { width, name }) => {
-			const [left, right] = columnSideSpace(width, name);
-			return t + `${left}${name}${right}${this.options.column}`;
+			return t + `${formatter.center(width, name)}${this.options.column}`;
 		}, this.options.column);
 	}
 
 	oneline(content) {
-		const [left, right] = columnSideSpace(this.contentWidth, content);
-		return `${this.options.column}${left}${content}${right}${this.options.column}`;
-	}
-
-	empty() {
-		return this.oneline("");
-	}
-
-	fillline(content) {
-		return `${this.options.column}${line(this.contentWidth, content)}${this.options.column}`;
+		return `${this.options.column}${formatter.center(this.contentWidth, content)}${this.options.column}`;
 	}
 }
