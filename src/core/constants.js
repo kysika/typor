@@ -6,6 +6,8 @@ export const DatabaseTable = {
 	User: "user",
 	ArticleTag: "article_tag",
 	UserArticle: "user_article",
+	ArticleTimeline: "article_timeline",
+	ArticleCategory: "article_category",
 };
 
 export const References = {

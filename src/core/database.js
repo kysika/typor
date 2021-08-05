@@ -49,24 +49,45 @@ export const tablemap = {
 		table.integer("created_at");
 		table.integer("updated_at");
 		table.integer("status").notNullable();
-		table.integer(Foreigns.timeline);
-		table.integer(Foreigns.category);
-		table.integer(Foreigns.user);
-		table.foreign(Foreigns.timeline).references(References.timeline);
-		table.foreign(Foreigns.category).references(References.category);
-		table.foreign(Foreigns.user).references(References.user);
 	},
 	[DatabaseTable.ArticleTag]: (table) => {
 		table.increments("id").primary();
 		table.integer(Foreigns.article).notNullable();
-		table.integer(Foreigns.tag).notNullable();
 		table.foreign(Foreigns.article).references(References.article);
+		table.integer(Foreigns.tag).notNullable();
 		table.foreign(Foreigns.tag).references(References.tag);
+	},
+	[DatabaseTable.ArticleCategory]: (table) => {
+		table.increments("id").primary();
+		table.integer(Foreigns.article).notNullable();
+		table.foreign(Foreigns.article).references(References.article);
+		table.integer(Foreigns.category).notNullable();
+		table.foreign(Foreigns.category).references(References.category);
+	},
+	[DatabaseTable.ArticleTimeline]: (table) => {
+		table.increments("id").primary();
+		table.integer(Foreigns.timeline).notNullable();
+		table.foreign(Foreigns.timeline).references(References.timeline);
+		table.integer(Foreigns.article).notNullable();
+		table.foreign(Foreigns.article).references(References.article);
+	},
+	[DatabaseTable.UserArticle]: (table) => {
+		table.increments("id").primary();
+		table.integer(Foreigns.article).notNullable();
+		table.foreign(Foreigns.article).references(References.article);
+		table.integer(Foreigns.user);
+		table.foreign(Foreigns.user).references(References.user);
 	},
 };
 
-export async function bootstrapTables() {
+export async function bootstrapTables(force) {
 	const tablenames = Object.keys(tablemap);
+	if (force) {
+		await Promise.all(tablenames.map((table) => database.schema.dropTable(table).catch(() => {})));
+		await Promise.all(tablenames.map((table) => database.schema.createTable(table)));
+		return;
+	}
+
 	for (const tablename of tablenames) {
 		const existed = await database.schema.hasTable(tablename);
 		if (!existed) {

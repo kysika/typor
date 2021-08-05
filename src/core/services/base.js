@@ -25,9 +25,10 @@ export function createBaseService(table) {
 	 */
 	async function search(searchOption = {}) {
 		/** @type { import("../../../global.js").SearchOption } */
-		const { limit, page, where } = {
+		const { limit, page, where, reverse } = {
 			limit: 10,
 			page: 1,
+			reverse: false,
 			where: {},
 			...searchOption,
 		};
@@ -44,6 +45,7 @@ export function createBaseService(table) {
 			.select("*")
 			.limit(limit)
 			.offset((page - 1) * limit)
+			.orderBy("id", reverse ? "desc" : "asc")
 			.where(where);
 	}
 

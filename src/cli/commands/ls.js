@@ -34,13 +34,15 @@ export default {
 		["--limit <limit>", ""],
 		["--page <page>", ""],
 		["--search <search>", "query string"],
+		["--reverse", ""],
 	],
-	action: async (type = "article", { limit = 10, page = 1, search }) => {
+	action: async (type = "article", { limit = 10, page = 1, search, reverse }) => {
 		const where = qs2obj(search);
 		const searchOption = {
 			limit,
 			page,
 			where,
+			reverse,
 		};
 		await actions[type]?.(searchOption);
 		database.destroy();

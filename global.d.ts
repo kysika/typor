@@ -21,6 +21,7 @@ export declare interface SearchOption {
 	limit: number;
 	page: number;
 	where: Record<string, unknown>;
+	reverse: boolean;
 }
 
 export declare enum ArticleStatus {
