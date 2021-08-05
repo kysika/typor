@@ -7,8 +7,9 @@ import { models } from "../models/index.js";
 export function createBaseService(table) {
 	const useModel = models[table];
 
-	function create(data) {
-		return useModel().insert(data);
+	async function create(data) {
+		const numbers = await useModel().insert(data);
+		return numbers[0];
 	}
 
 	function remove(where) {

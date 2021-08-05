@@ -37,7 +37,7 @@ async function createWithResource(title, resource) {
 		excerpt: excerpt(content).replace(/\n/g, "").slice(0, 100),
 		status: ArticleStatus.hide,
 	};
-	await articleBaseService.create(article);
+	return await articleBaseService.create(article);
 }
 
 export const articleService = Object.freeze({

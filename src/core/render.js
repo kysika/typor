@@ -10,13 +10,3 @@
  */
 
 export function render(type) {}
-// 存储结构
-// article
-// article-tag
-// timeline-article
-// timeline
-// tag
-// article-category
-// category
-// user
-// user-article

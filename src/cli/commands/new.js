@@ -12,7 +12,8 @@ export default {
 	],
 	action: async (markdown, { title, tag, author, excerpt }) => {
 		try {
-			await articleService.createFromFile(markdown, title);
+			const id = await articleService.createFromFile(markdown, title);
+			console.log(id);
 		} catch (e) {
 			renderer.error(e);
 		}
