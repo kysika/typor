@@ -1,19 +1,22 @@
-import { database } from "../database.js";
+import { models } from "../models/index.js";
+
 /**
  * @template T
  * @param {string} table
  */
-export function createCURD(table) {
+export function createBaseService(table) {
+	const useModel = models[table];
+
 	function create(data) {
-		return database.insert(data).into(table);
+		return useModel().insert(data);
 	}
 
 	function remove(where) {
-		return database.from(table).delete(where).limit(1);
+		return useModel().delete(where).limit(1);
 	}
 
 	function removeAll(where) {
-		return database.from(table).delete(where);
+		return useModel().delete(where);
 	}
 
 	/**
@@ -37,8 +40,7 @@ export function createCURD(table) {
 			throw new Error("use a valid limit great than 0");
 		}
 
-		return database
-			.from(table)
+		return useModel()
 			.select("*")
 			.limit(limit)
 			.offset((page - 1) * limit)
@@ -46,11 +48,16 @@ export function createCURD(table) {
 	}
 
 	function update(update, where) {
-		return database.from(table).update(update, where).limit(1);
+		return useModel().update(update, where).limit(1);
 	}
 
 	function updateAll(where) {
-		return database.from(table).update(update, where);
+		return useModel().update(update, where);
+	}
+
+	async function total(where = {}) {
+		const data = await useModel().count("id").where(where);
+		return data[0]["count(`id`)"];
 	}
 
 	return Object.freeze({
@@ -60,5 +67,7 @@ export function createCURD(table) {
 		search,
 		update,
 		updateAll,
+		useModel,
+		total,
 	});
 }

@@ -29,3 +29,5 @@ export const ArticleStatus = {
 	display: 1,
 	invalide: 2,
 };
+
+export const templatePath = ".template";

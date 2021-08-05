@@ -1,5 +1,5 @@
 import Router from "koa-router";
-import { database } from "../../core/data.js";
+import { database } from "../../core/database.js";
 
 const router = new Router();
 

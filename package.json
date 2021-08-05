@@ -10,7 +10,7 @@
 		"./svelte": "./src/svelte/index.js"
 	},
 	"bin": {
-		"tk": "./src/cli/index.js"
+		"tyke": "./src/cli/index.js"
 	},
 	"scripts": {
 		"dev:client": "vite -c src/client/vite.config.js",
@@ -44,6 +44,7 @@
 		"mobx": "^6.3.2",
 		"mustache": "^4.2.0",
 		"normalize.css": "^8.0.1",
+		"path-to-regexp": "^6.2.0",
 		"postcss": "^8.3.5",
 		"precss": "^4.0.0",
 		"react": "^17.0.2",
@@ -54,6 +55,7 @@
 		"sqlite3": "^5.0.2",
 		"string-width": "^5.0.0",
 		"svelte-preprocess": "^4.7.3",
+		"svelte-routing": "^1.6.0",
 		"uuid": "^8.3.2"
 	},
 	"devDependencies": {

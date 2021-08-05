@@ -6,7 +6,7 @@ export const database = knex({
 	connection: {
 		filename: "database.db",
 	},
-	debug: false,
+	debug: true,
 	useNullAsDefault: true,
 });
 

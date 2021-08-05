@@ -15,7 +15,7 @@ const actions = {
 	async article(option) {
 		try {
 			const tr = new TableRenderer(articleTable);
-			const [data, total] = await Promise.all([articleService.search(option), articleService.count(option.where)]);
+			const [data, total] = await Promise.all([articleService.search(option), articleService.total(option.where)]);
 			tr.render({ data, pagination: { total, ...option } });
 		} catch (e) {
 			renderer.error(e);

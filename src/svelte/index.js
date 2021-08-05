@@ -55,10 +55,15 @@ export function useTimeline() {
 export function toggleTheme() {}
 
 export function useServerSideInjectedContext() {
-	return window[serverSideInjectedContextKey] || new Map();
+	if (window[serverSideInjectedContextKey]) {
+		return new Map(Object.entries(window[serverSideInjectedContextKey]));
+	}
+	return new Map();
 }
 
-export function useURL() {
-	const url = writable(getContext("url") || "/");
-	return url;
+export function useInitURL() {
+	if (window[serverSideInjectedContextKey]) {
+		return window[serverSideInjectedContextKey].url;
+	}
+	return "/";
 }

@@ -1,5 +1,6 @@
 import path from "path";
 import http from "http";
+import fs from "fs-extra";
 
 /**
  *
@@ -46,4 +47,26 @@ export async function usePort() {
 
 		start(port);
 	});
+}
+
+/**
+ *
+ * @param {string} folder
+ */
+export async function ifOuputFolderCanUse(folder) {
+	try {
+		const file = await fs.stat(folder);
+		if (file.isDirectory()) {
+			const subs = await fs.readdir(folder);
+			return subs.length === 0;
+		} else {
+			return false;
+		}
+	} catch (e) {
+		if (e.code === "ENOENT") {
+			await fs.ensureDir(folder);
+			return true;
+		}
+		return false;
+	}
 }

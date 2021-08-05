@@ -8,6 +8,7 @@ export default {
 		["--tag <tag>", "tag for this article, split by ,"],
 		["--author <author>", "author for this article"],
 		["--excerpt <excerpt>", "excerpt for this article"],
+		["--no-page", "pevent generate html"],
 	],
 	action: async (markdown, { title, tag, author, excerpt }) => {
 		try {

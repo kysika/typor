@@ -1,19 +1,19 @@
-import chalk from "chalk";
+import { color } from "./color.js";
 
 function text(...args) {
-	return console.log(chalk.bgHex("#05111b").hex("#fff")(...args));
+	return console.log(color.bg(color.text(...args)));
 }
 
 function primary(...args) {
-	return console.log(chalk.bgHex("#05111b").hex("#f8db42")(...args));
+	return console.log(color.bg(color.primary(...args)));
 }
 
 function accent(...args) {
-	return console.log(chalk.bgHex("#05111b").hex("#d75d37")(...args));
+	return console.log(color.bg(color.accent(...args)));
 }
 
 function error(...args) {
-	return console.log(chalk.bgHex("#05111b").hex("#af1f21")(...args));
+	return console.log(color.bg(color.error(...args)));
 }
 
 export const renderer = Object.freeze({
