@@ -4,11 +4,11 @@ import { writable } from "svelte/store";
 const serverSideInjectedContextKey = Symbol.for("tying_knots_server_side_context");
 
 const api = {
-	article: "/api/article/",
-	articles: "/api/articles",
-	tag: "/api/tags",
-	timeline: "/api/timeline",
-	category: "/api/category",
+	article: "/__api__/article/",
+	articles: "/__api__/articles",
+	tag: "/__api__/tags",
+	timeline: "/__api__/timeline",
+	category: "/__api__/category",
 };
 
 function useData(url, defaultValue = {}) {
